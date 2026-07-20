@@ -298,19 +298,6 @@ public static unsafe partial class Rlgl
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void DisableVertexAttribute(uint index);
 
-    /// <summary>Enable attribute state pointer<br/>
-    /// NOTE: Only available for GRAPHICS_API_OPENGL_11</summary>
-    [LibraryImport(NativeLibName, EntryPoint = "rlEnableStatePointer")]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void EnableStatePointer(int vertexAttribType, void* buffer);
-
-    /// <summary>Disable attribute state pointer<br/>
-    /// NOTE: Only available for GRAPHICS_API_OPENGL_11</summary>
-    [LibraryImport(NativeLibName, EntryPoint = "rlDisableStatePointer")]
-    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial void DisableStatePointer(int vertexAttribType);
-
-
     // Textures state
 
     /// <summary>Select and active a texture slot</summary>
@@ -757,7 +744,7 @@ public static unsafe partial class Rlgl
     /// <summary>Load depth texture/renderbuffer (to be attached to fbo)</summary>
     [LibraryImport(NativeLibName, EntryPoint = "rlLoadTextureDepth")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
-    public static partial uint LoadTextureDepth(int width, int height, CBool useRenderBuffer);
+    public static partial uint LoadTextureDepth(int width, int height, int useRenderBuffer);
 
     /// <summary>Load texture cubemap data</summary>
     [LibraryImport(NativeLibName, EntryPoint = "rlLoadTextureCubemap")]
@@ -826,8 +813,8 @@ public static unsafe partial class Rlgl
     public static partial void FramebufferAttach(
         uint fboId,
         uint texId,
-        FramebufferAttachType attachType,
-        FramebufferAttachTextureType texType,
+        int attachType,
+        int texType,
         int mipLevel
     );
 

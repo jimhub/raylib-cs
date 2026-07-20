@@ -1,25 +1,34 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <StartupObject>Examples.Program</StartupObject>
-    <RunWorkingDirectory>$(MSBuildThisFileDirectory)</RunWorkingDirectory>
-    <LangVersion>default</LangVersion>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <StartupObject>Examples.Program</StartupObject>
+        <RunWorkingDirectory>$(MSBuildThisFileDirectory)</RunWorkingDirectory>
+        <LangVersion>12</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Core/LoadingThread.cs"/>
-    <Compile Remove="Text/Unicode.cs"/>
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Core/LoadingThread.cs"/>
+        <Compile Remove="Text/Unicode.cs"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Using Include="Raylib_cs" />
-  </ItemGroup>
+    <ItemGroup>
+        <Using Include="Raylib_cs"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="../Raylib-cs/Raylib-cs.csproj" />
-    <ProjectReference Include="../Raylib-cs.Native/Raylib-cs.Native.csproj" />
-  </ItemGroup>
+    <ItemGroup Condition="'$(UseRaylibCsPackage)' != 'true'">
+        <ProjectReference Include="..\Raylib-cs\Raylib-cs.csproj"/>
+    </ItemGroup>
+
+    <!-- NuGet imports this from buildTransitive/ for PackageReference; ProjectReference needs it imported from source
+         so the native raylib library is downloaded and copied to the output. -->
+    <Import Project="..\Raylib-cs\Raylib-cs.targets" Condition="'$(UseRaylibCsPackage)' != 'true'"/>
+
+    <ItemGroup Condition="'$(UseRaylibCsPackage)' == 'true'">
+        <PackageReference Include="Raylib-cs" Version="$(RaylibCsVersion)"/>
+    </ItemGroup>
+
 </Project>
